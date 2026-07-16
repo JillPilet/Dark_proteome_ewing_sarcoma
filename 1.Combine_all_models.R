@@ -125,6 +125,21 @@ all.models = all.models %>%
                                   Shorter_transcript == "Yes", 
                                 "Short_isoform", "No"))
 
+#  Annotate Long isoforms
+all.models = all.models %>%
+  mutate(TSS_before_gene = case_when(Strand=="+" & TSS < start_position ~ "Yes",
+                                     Strand=="+" & TSS > start_position ~ "No",
+                                     Strand=="-" & TSS > end_position ~ "Yes",
+                                     Strand=="-" & TSS < end_position ~ "No"),
+         GGAA_before_gene = case_when(Strand=="+" & GGAA_FLI_pos < start_position ~ "Yes",
+                                      Strand=="+" & GGAA_FLI_pos > start_position ~ "No",
+                                      Strand=="-" & GGAA_FLI_pos > end_position ~ "Yes",
+                                      Strand=="-" & GGAA_FLI_pos < end_position ~ "No"),
+         Long.isoform = ifelse(TSS_before_gene == "Yes" & 
+                                 GGAA_before_gene == "Yes" & 
+                                 Length_Transcript...64 > Length_Ref_Transcript + 100, # Transcript longer than reference
+                               "Long.isoform", "No")) 
+
   # 1.5 Export table to get unique isoforms------------------------------------
 write.xlsx(all.models, file = ".../all.models_merged_before_gff_compare.xlsx", sep="\t")
 
@@ -169,6 +184,7 @@ dim(all.models.unique)
   # 2.3 Create a unique column for NG annotation--------------------------------
 all.models.unique  = all.models.unique %>%
   mutate(isoform_type = case_when(Short.isoform=="Short_isoform" ~ "Truncated_isoform",
+                                  Long.isoform=="Short.isoform" ~ "Long_isoform",
                                   grepl("Ew_NG", Gene_Annot_if_different) ~ "Neogene"))
 
 # Export files
