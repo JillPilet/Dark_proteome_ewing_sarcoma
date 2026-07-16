@@ -80,7 +80,7 @@ all.models <- full_join(all.models, EW16)
 all.models <- full_join(all.models, EW7)
 all.models <- full_join(all.models, Ewima1)
 
-write.xlsx(all.models, file = "C:/Users/Administrateur/Documents/Neogene_long_read_project/All_merged/V9/Merged_file/all.models_merged.xlsx", sep="\t")
+write.xlsx(all.models, file = ".../all.models_merged.xlsx", sep="\t")
 
   # 1.4 Automatically annotate Long isoforms and truncated isoforms ------------
 
@@ -88,7 +88,7 @@ write.xlsx(all.models, file = "C:/Users/Administrateur/Documents/Neogene_long_re
 # Manually change the TSS to remove chromosome
 
 # Load the updated file
-all.models <- read.delim("C:/Users/Administrateur/Documents/Neogene_long_read_project/All_merged/V9/Merged_file/all.models_merged_modified.txt", sep="\t")
+all.models <- read.delim(".../all.models_merged_modified.txt", sep="\t")
 
 # Add genomic start and end
 ensembl = useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl", host="https://feb2014.archive.ensembl.org")
